@@ -1,0 +1,32 @@
+name: Process Game1 URLs
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每 6 小时运行一次
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  process-game1-urls:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python 环境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: 安装依赖
+        run: |
+          pip install requests mysql-connector-python tqdm
+
+      - name: 运行 Python 脚本
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+        run: python process_game1_urls.py
