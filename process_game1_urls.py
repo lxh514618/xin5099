@@ -69,7 +69,7 @@ def process_batch(records):
 
     # 批量删除
     if to_delete:
-        delete_query = "DELETE FROM game1_urls WHERE access_token = %s"
+        delete_query = "DELETE FROM hpjy WHERE access_token = %s"
         cursor.executemany(delete_query, to_delete)
         connection.commit()
 
@@ -81,7 +81,7 @@ def main():
     connection = get_db_connection()
     if connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT access_token FROM game1_urls ORDER BY level DESC;")
+        cursor.execute("SELECT access_token FROM hpjy ORDER BY level DESC;")
         records = cursor.fetchall()
 
         with tqdm(total=len(records), desc="处理记录") as pbar:
